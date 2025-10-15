@@ -1,0 +1,5 @@
+# Ignore Spark streaming metadata
+checkpoints/
+
+# Ignore output data
+outputs/
