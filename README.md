@@ -95,6 +95,18 @@ By the end of this assignment, you should be able to:
 2. Use spark.readStream.format("socket") to read from localhost:9999.
 3. Parse the JSON payload into columns.
 4. Print the parsed data to the console (using .writeStream.format("console")).
+The `task1.py` script ingests streaming data from a socket (`localhost:9999`). It parses the incoming JSON messages into a Spark DataFrame with the columns: `trip_id`, `driver_id`, `distance_km`, `fare_amount`, and `timestamp`. The parsed data is then printed to the console.
+
+#### **Sample Output (`outputs/task_1/`)**
+
+The script also writes the raw, parsed stream data to CSV files in the `outputs/task_1` directory. Each row represents a single ride event.
+
+| trip_id                                | driver_id | distance_km | fare_amount | timestamp           |
+| -------------------------------------- | --------- | ----------- | ----------- | ------------------- |
+| 5dd8d7e6-7ee6-4a4d-b20a-702ea1dcf078     | 59        | 22.65       | 62.30       | 2025-10-15 22:33:12 |
+| ...                                    | ...       | ...         | ...         | ...                 |
+
+<br/>
 
 ---
 
@@ -112,6 +124,23 @@ By the end of this assignment, you should be able to:
 4. AVG(distance_km) as avg_distance
 5. Store the result in csv
 
+The `task2.py` script aggregates the streaming data in real time to calculate the cumulative total fare and average trip distance for each driver.
+
+#### **Sample Output (`outputs/task_2/`)**
+
+The results are written to CSV files in the `outputs/task_2` directory. The data shows the updated totals for each driver as new ride data is processed.
+
+| driver_id | total_fare | average_distance  |
+| --------- | ---------- | ----------------- |
+| 7         | 335.30     | 23.3257           |
+| 54        | 686.29     | 28.8580           |
+| 15        | 431.89     | 15.4183           |
+| 8         | 575.69     | 32.7000           |
+| 2         | 796.81     | 27.6072           |
+| ...       | ...        | ...               |
+
+<br/>
+
 ---
 
 ## **Task 3: Windowed Time-Based Analytics**
@@ -125,15 +154,26 @@ By the end of this assignment, you should be able to:
 2. Use Spark’s window function to aggregate over a 5-minute window, sliding by 1 minute, for the sum of fare_amount.
 3. Output the windowed results to csv.
 
+The `task3.py` script performs a time-based aggregation using a **5-minute sliding window** that advances every **1 minute**. It calculates the total `fare_amount` collected across all rides within each window. A 1-minute watermark is used to handle late-arriving data.
+
+#### **Sample Output (`outputs/task_3/`)**
+
+The results are written to CSV files in the `outputs/task_3` directory. Each row represents the total fare for a specific 5-minute window.
+
+| window_start               | window_end                 | total_fare |
+| -------------------------- | -------------------------- | ---------- |
+| 2025-10-15T23:09:00.000Z   | 2025-10-15T23:14:00.000Z   | 22381.46   |
+| ...                        | ...                        | ...        |
+
 ---
 
 ## 📬 Submission Checklist
 
-- [ ] Python scripts 
-- [ ] Output files in the `outputs/` directory  
-- [ ] Completed `README.md`  
-- [ ] Commit everything to GitHub Classroom  
-- [ ] Submit your GitHub repo link on canvas
+- [x] Python scripts 
+- [x] Output files in the `outputs/` directory  
+- [x] Completed `README.md`  
+- [x] Commit everything to GitHub Classroom  
+- [x] Submit your GitHub repo link on canvas
 
 ---
 
